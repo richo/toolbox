@@ -38,7 +38,9 @@ else
 
     # Reverting Xcode’s image optimizations
     # and moving every image to the set destination
-    "$pngcrush" -d "$destination" -q -revert-iphone-optimizations "$temp/Payload"/*.app/*.png
+    for image in "$temp/Payload"/*.app/*.png; do
+        "$pngcrush" -d "$destination" -q -revert-iphone-optimizations "$image" > /dev/null 2>&1
+    done;
 
     # Cleaning up
     rm -drf "$temp"
