@@ -10,7 +10,7 @@ if [ ! -e "$pngcrush" ]; then
 
 # Checking if the file passed as an argument exists
 # and its name ends with `.ipa` (or rather checking the opposite of both)
-elif [ ! -f "$file" -o "${file##*.}" != "ipa" ]; then
+elif [[ ! -f "$file" || "${file##*.}" != "ipa" ]]; then
     echo "Pass the path to an existing iOS application."
 
 # At this point, everything should be fine
@@ -21,15 +21,16 @@ else
 
     # Setting the destination directory
     destination="$app Images"
-    echo "Extracting $app""’s images to ‘$destination""’"
+    printf "Extracting %s’s images to ‘%s’\n" "$app" "$destination"
 
     # If such directory already exists, just remove it
     if [ -d "$destination" ]; then
         rm -drf "$destination"
-        echo "(aleady existing ‘$destination""’ has been removed)"
+        printf "(aleady existing ‘%s’ has been removed)\n" "$destination"
     fi
 
     mkdir "$destination"
+    echo # newline
 
     # A file with `.ipa` extension is just a zipped bundle,
     # unzipping it to the temporary directory
@@ -39,6 +40,7 @@ else
     # Reverting Xcode’s image optimizations
     # and moving every image to the set destination
     for image in "$temp/Payload"/*.app/*.png; do
+        [ -f "$image" ] || continue
         "$pngcrush" -d "$destination" -q -revert-iphone-optimizations "$image" > /dev/null 2>&1
     done;
 
@@ -46,5 +48,5 @@ else
     rm -drf "$temp"
 
     open "$destination"
-    echo; echo "Done."
+    echo "Done."
 fi
