@@ -37,11 +37,16 @@ else
     temp="$destination/Temp"
     unzip -q "$file" -d "$temp"
 
-    # Reverting Xcode’s image optimizations
-    # and moving every image to the set destination
+    # Reverting Xcode’s optimizations from PNG files and saving them in the set destination
     for image in "$temp/Payload"/*.app/*.png; do
         [ -f "$image" ] || continue
         "$pngcrush" -d "$destination" -q -revert-iphone-optimizations "$image" > /dev/null 2>&1
+    done;
+
+    # Also moving all other images supported by iOS (http://cl.ly/IQgJ)
+    for image in "$temp"/*.{tiff,tif,jpg,jpeg,gif,bmp,BPMf,ico,cur,xbm}; do
+        [ -f "$image" ] || continue
+        mv "$image" "$destination"
     done;
 
     # Cleaning up
