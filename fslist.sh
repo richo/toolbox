@@ -2,10 +2,10 @@
 
 # If there’s no proper path passed in the argument,
 # the script will list files in the current directory
-if [[ -z "$1" || ! -d "$1" ]]; then
-    path="."
-else
+if [[ -n "$1" && -d "$1" ]]; then
     path="$1"
+else
+    path="."
 fi
 
 # Looping through the list of all files and directories,
