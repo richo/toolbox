@@ -41,13 +41,13 @@ else
     for image in "$temp/Payload"/*.app/*.png; do
         [ -f "$image" ] || continue
         "$pngcrush" -d "$destination" -q -revert-iphone-optimizations "$image" > /dev/null 2>&1
-    done;
+    done
 
     # Also moving all other images supported by iOS (http://cl.ly/IQgJ)
     for image in "$temp"/*.{tiff,tif,jpg,jpeg,gif,bmp,BPMf,ico,cur,xbm}; do
         [ -f "$image" ] || continue
         mv "$image" "$destination"
-    done;
+    done
 
     # Cleaning up
     rm -drf "$temp"

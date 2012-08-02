@@ -63,4 +63,4 @@ for file in $(ls -A "$path"); do
 
     # Human-readable output
     printf "%8.1f %1s  %s\n" "$size" "$unit" "$file"
-done;
+done
