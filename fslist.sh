@@ -6,22 +6,11 @@ if [[ -z "$1" || ! -d "$1" ]]; then
     path="."
 else
     path="$1"
-
-    # If the path doesn’t end with slash, append one
-    if [ ${path#${path%?}} != '/' ]; then
-        pathto="$path/"
-    else
-        pathto="$path"
-    fi
 fi
 
 # Looping through the list of all files and directories,
 # including hidden files (`ls -A` ignores `.` and `..`)
 for file in $(ls -A "$path"); do
-
-    # Prepending filename with its path
-    # (`$pathto` isn’t set for the current directory)
-    file="$pathto$file"
 
     # If it’s a file, count its size in bytes using simple `wc`
     if [ -f "$file" ]; then
